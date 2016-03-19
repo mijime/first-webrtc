@@ -1,0 +1,40 @@
+<script type=text/javascript>
+console.log('hello world');
+
+var label = 'MyLabel';
+
+// Browser によって名前違う
+var RTCPeerConnection =
+  RTCPeerConnection ||
+  webkitRTCPeerConnection ||
+  mozRTCPeerConnection;
+
+var pc = new RTCPeerConnection(null);
+
+pc.createOffer(function (e) {
+  console.log('[I] createOffer', e);
+  pc.setLocalDescription(e);
+});
+
+pc.createAnswer(function (e) {
+  console.log('[I] createAnswer', e);
+});
+
+var dc = pc.createDataChannel(label, {});
+
+dc.onerror = function (e) {
+  console.log('[E]', e);
+};
+
+dc.onmessage = function (e) {
+  console.log('[I] message', e);
+};
+
+dc.onopen = function () {
+  dc.send('[I] open');
+};
+
+dc.onclose = function () {
+  console.log('[I] close');
+};
+</script>
