@@ -1,14 +1,15 @@
 require 'webrick'
 
 class ApiServlet < WEBrick::HTTPServlet::AbstractServlet
-  @@req = nil
+  @@req = ""
+
   def do_GET(req, res)
     p @@req
-    @@req = req
+    res.body = @@req
   end
 
   def do_POST(req, res)
-    p req
+    p @@req = req.body
   end
 end
 
