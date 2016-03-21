@@ -1,15 +1,17 @@
 require 'webrick'
+require 'json'
 
 class ApiServlet < WEBrick::HTTPServlet::AbstractServlet
-  @@req = ""
+  @@sdp_lists = {}
 
   def do_GET(req, res)
-    p @@req
-    res.body = @@req
+    b = @@sdp_lists[req.path]
+    res.body = JSON.generate b unless b.nil?
   end
 
   def do_POST(req, res)
-    p @@req = req.body
+    b = JSON.parse req.body
+    @@sdp_lists[req.path] = b
   end
 end
 
